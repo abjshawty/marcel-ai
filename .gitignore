@@ -1,2 +1,5 @@
 env
 .env
+demo.db
+__pycache__
+*.json
