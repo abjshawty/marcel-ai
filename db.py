@@ -1,15 +1,9 @@
 from pymilvus import MilvusClient, model
-import json, spacy
-def create(client):
-    if client.has_collection(collection_name="saphia"):
-        client.drop_collection(collection_name="saphia")
-    client.create_collection(
-        collection_name="saphia",
-        dimension=128,
-        # The vectors we will use in this demo has 768 dimensions.
-    )
+import json, os, spacy
+from langchain_community.document_loaders import PyPDFLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_milvus import Milvus
 
-    print("Collection created.")
 def embed_test():
     # If connection to https://huggingface.co/ failed, uncomment the following path
     # import os
@@ -36,7 +30,6 @@ def embed_test():
 
     # print("Data has", len(data), "entities, each with fields: ", data[0].keys())
     # print("Vector dim:", len(data[0]["vector"]))
-
 def custom_embedding():
     titles = [
         "Interstellar",
@@ -52,11 +45,38 @@ def custom_embedding():
     with open("movies.json", "w") as f:
         json.dump(data, f, indent=4)
     return data
-
-
+def file_embedding():
+    pdf_path = "/pdf"
+    documents = []
+    for file in os.listdir(pdf_path):
+        if file.endswith(".pdf"):
+            uri = os.path.join(pdf_path, file)
+            print(uri)
+            loader = PyPDFLoader(uri)
+            documents.extend(loader.load())
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
+    all_splits = text_splitter.split_documents(documents)
+    embedding_fn = model.DefaultEmbeddingFunction()
+    embeddings = embedding_fn.encode_documents(documents)
+    vectorstore = Milvus.from_documents( 
+        documents=documents,
+        embedding=embeddings,
+        connection_args={
+            "uri": "http://localhost:19530",
+        },
+        drop_old=False,  
+    )
+    vectorstore.similarity_search("Parle moi du processus de ventilation des encaissements.")
+    
+def init():
+    client = MilvusClient("demo.db")
+    if client.has_collection(collection_name="saphia"):
+        client.drop_collection(collection_name="saphia")
+    client.create_collection(
+        collection_name="saphia",
+        dimension=128,
+    )
+    return client
 if __name__ != "__main__":
-    # db = MilvusClient("demo.db")
-    # create(db)
-    # embed_test()
     custom_embedding()
     print("Done")

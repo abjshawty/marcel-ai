@@ -1,8 +1,7 @@
-import spacy
+import json, spacy
 from pymilvus import connections, Collection, MilvusException
 
 nlp = spacy.load("en_core_web_lg")
-
 def run():
 	try:
 		connections.connect("default", host="localhost", port="19530")
@@ -71,10 +70,5 @@ def run_once(user_input: str):
 	finally:
 		connections.disconnect("default")
 	
-	# with open("movies.json", "r") as f:
-	# 	data = json.load(f)
-	# 	vectors = [nlp(doc["title"]).vector for doc in data]
-	# 	collection.insert([vectors])
-
 if __name__ == "__main__":
 	run()
