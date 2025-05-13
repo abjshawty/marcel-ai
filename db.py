@@ -4,6 +4,9 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_milvus import Milvus
 
+from langchain_openai import AzureOpenAIEmbeddings
+embeddings = AzureOpenAIEmbeddings()
+
 def embed_test():
     # If connection to https://huggingface.co/ failed, uncomment the following path
     # import os
@@ -46,7 +49,7 @@ def custom_embedding():
         json.dump(data, f, indent=4)
     return data
 def file_embedding():
-    pdf_path = "/pdf"
+    pdf_path = os.curdir + "/pdf"
     documents = []
     for file in os.listdir(pdf_path):
         if file.endswith(".pdf"):
@@ -56,10 +59,11 @@ def file_embedding():
             documents.extend(loader.load())
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
     all_splits = text_splitter.split_documents(documents)
-    embedding_fn = model.DefaultEmbeddingFunction()
-    embeddings = embedding_fn.encode_documents(documents)
+    # embedding_fn = model.DefaultEmbeddingFunction()
+    print(type(all_splits))
+    # embeddings = embedding_fn.encode_documents(all_splits)
     vectorstore = Milvus.from_documents( 
-        documents=documents,
+        documents=all_splits,
         embedding=embeddings,
         connection_args={
             "uri": "http://localhost:19530",
@@ -80,3 +84,5 @@ def init():
 if __name__ != "__main__":
     custom_embedding()
     print("Done")
+else:
+    file_embedding()
