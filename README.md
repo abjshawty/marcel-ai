@@ -1,7 +1,7 @@
 # Marcel RAG
 
 ## Installation process
-1. git clone https://github.com/abjshawty/marcel-ai.git
+1. `git clone https://github.com/abjshawty/marcel-ai.git`
 2. cd marcel-ai
 3. python -m venv env
 4. . env/bin/activate
