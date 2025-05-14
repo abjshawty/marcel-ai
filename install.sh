@@ -1,7 +1,6 @@
 #!/bin/bash
 if [[ $EUID -eq 0 ]]; then
   echo "Script is running as root (likely with sudo)."
-  exit 0
 else
   echo "Script is not running as root."
   exit 1
