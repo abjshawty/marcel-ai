@@ -5,7 +5,12 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_milvus import Milvus
 
 from langchain_openai import AzureOpenAIEmbeddings
-embeddings = AzureOpenAIEmbeddings()
+embeddings = AzureOpenAIEmbeddings(
+    azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"), 
+    azure_deployment=os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME"), 
+    # azure_api_version="2024-02-15-preview", 
+    api_key=os.getenv("AZURE_OPENAI_API_KEY")
+)
 
 def embed_test():
     # If connection to https://huggingface.co/ failed, uncomment the following path
@@ -48,25 +53,26 @@ def custom_embedding():
     with open("movies.json", "w") as f:
         json.dump(data, f, indent=4)
     return data
+
 def file_embedding():
     pdf_path = os.curdir + "/pdf"
     documents = []
     for file in os.listdir(pdf_path):
         if file.endswith(".pdf"):
             uri = os.path.join(pdf_path, file)
-            print(uri)
+            # print(uri)
             loader = PyPDFLoader(uri)
             documents.extend(loader.load())
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
     all_splits = text_splitter.split_documents(documents)
     # embedding_fn = model.DefaultEmbeddingFunction()
-    print(type(all_splits))
+    # print(type(all_splits))
     # embeddings = embedding_fn.encode_documents(all_splits)
     vectorstore = Milvus.from_documents( 
         documents=all_splits,
         embedding=embeddings,
         connection_args={
-            "uri": "http://localhost:19530",
+            "uri": "http://172.17.0.1:19530",
         },
         drop_old=False,  
     )
