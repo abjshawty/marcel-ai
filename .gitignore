@@ -1,6 +1,6 @@
-env
-.env
-demo.db
 __pycache__
-*.json
+demo.db
 volumes
+*.json
+.env
+env
