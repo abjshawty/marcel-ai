@@ -1,16 +1,17 @@
 from flask import Flask
-from data import run_once
+import functions
 
 app = Flask(__name__)
-@app.route("/")
-def hello():
-	return "<h1>Konnichiwa, bitches</h1>"
 
 @app.route('/q/<q>', methods=['GET', 'POST'])
-def quest(q):
-	# Ask Milvus
-	return "<h1>" + run_once(q) + "</h1>"
+def question(q):
+	result = functions.vector_search(q)
+	return f"<p>{result.message}</p>"
 
-@app.route('/echo/<q>', methods=['GET'])
-def echo(q):
-	return "<h1>" + q + "</h1>"
+@app.route('/embed', methods=['GET'])
+def embed():
+	return f"<p>{functions.embed_files().message}</p>"
+
+@app.route('/embed/<file>', methods=['POST'])
+def embed_file(file):
+	return f"<p>{functions.embed_file(file).message}</p>"
