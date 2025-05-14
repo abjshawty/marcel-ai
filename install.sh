@@ -21,12 +21,12 @@ if docker inspect "$container_name" > /dev/null 2>&1; then
         echo "The container $container_name is running."
     else
         echo "The container $container_name is not running."
-        docker start "$container_name"
+        docker start -d "$container_name"
     fi
 else
     echo "The container $container_name does not exist."
     source .env
-    docker run --name "$container_name" -p 8000:3000 -e MILVUS_URL="$MILVUS_IP:$MILVUS_PORT" zilliz/attu
+    docker run -d --name "$container_name" -p 8000:3000 -e MILVUS_URL="$MILVUS_IP:$MILVUS_PORT" zilliz/attu
 fi
 source env/bin/activate;
 python3 -m pip install -r requirements.txt;
