@@ -9,6 +9,13 @@ fi
 python3 -m venv env;
 docker compose up -d;
 container_name="attu"
+if [ -f ".env" ]; then
+    echo "Environment variables file exists"
+else
+    echo "Environment variables file does not exist"
+    cp .env.example .env
+    nano .env
+fi
 if docker inspect "$container_name" > /dev/null 2>&1; then
     echo "The container $container_name exists."
     if $(docker inspect -f '{{.State.Status}}' "$container_name" | grep -q "running"); then
