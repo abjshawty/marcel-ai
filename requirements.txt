@@ -1,0 +1,6 @@
+Flask==3.1.0
+langchain==0.3.25
+langchain_milvus==0.1.10
+langchain_openai==0.3.16
+langchain_community==0.3.23
+pypdf==5.5.0
