@@ -72,7 +72,7 @@ def file_embedding():
         documents=all_splits,
         embedding=embeddings,
         connection_args={
-            "uri": "http://172.17.0.1:19530",
+            "uri": os.getenv("MILVUS_URI"),
         },
         drop_old=False,  
     )
