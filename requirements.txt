@@ -1,4 +1,5 @@
 Flask==3.1.0
+gunicorn==23.0.0
 langchain==0.3.25
 langchain_milvus==0.1.10
 langchain_openai==0.3.16
