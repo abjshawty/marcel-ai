@@ -10,5 +10,5 @@ ps ax | grep gunicorn | grep marcel | grep -v grep | head -n 1 | awk '{print $1}
 docker stop attu
 docker compose down
 docker system prune --all --force
-rm -rf -- "$(pwd -P)" && cd ..
+rm -rf -- "$(pwd -P)" && cd
 echo "Marcel was successfully removed from your system."
