@@ -1,7 +1,9 @@
 # Imports
+from dotenv import load_dotenv
 from langchain_openai import AzureOpenAIEmbeddings
 import os
 
+load_dotenv()
 # Constants
 PDF_FOLDER = "/pdf"
 RECURSIVE_CHARACTER_TEXT_SPLITTER_CHUNK_SIZE = 500

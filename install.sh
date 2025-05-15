@@ -30,4 +30,8 @@ else
 fi
 source env/bin/activate;
 python3 -m pip install -r requirements.txt;
-flask run --host=0.0.0.0 --no-debug &;
+gunicorn --name marcel --workers 1 --bind 0.0.0.0:5000 app:app --daemon
+echo "Marcel AI installed successfully."
+echo "The process is running on port $MILVUS_PORT"
+echo "To stop all Gunicorn processes, run 'pkill -f gunicorn'."
+echo "To stop only Marcel AI, run 'ss -tulpn | grep :5000', find pid and run 'kill <pid>'."

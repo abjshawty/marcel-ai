@@ -1,9 +1,10 @@
 import constants, os
+from langchain_milvus import Milvus
+from pymilvus import connections, Collection
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_milvus import Milvus
 
-def embed_file():
+def embed_file(): # TODO: Implement unique file embedding
     try:
         pass
     except Exception as e:
