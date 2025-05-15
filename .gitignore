@@ -4,3 +4,4 @@ volumes
 *.json
 .env
 env
+pdf/*
