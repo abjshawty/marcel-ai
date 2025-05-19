@@ -14,4 +14,4 @@
 11. Copy PDF files into the _**/pdf**_ folder
 12. `flask run`
 
-> If you have python3, python3-venv and docker installed, you can use `bash install.sh` after setting the environment variables in the `.env` file at *step 4*.
+If you have python3, python3-venv and docker installed, you can use `bash install.sh` after setting the environment variables in the `.env` file at *step 2*.
